@@ -13,7 +13,7 @@ cd $certs
 
 echo "Generating CA..."
 openssl genrsa -out ca.key 2048
-yes "" | openssl req -x509 -new -nodes -key ca.key \
+yes "" | openssl req -x509 -new -sha256 -nodes -key ca.key \
 	-out ca.crt -days 99999
 
 name="director"
@@ -31,14 +31,14 @@ EOL
 
 echo "Generating certificate signing request for ${SYS_DOMAIN}..."
 # golang requires to have SAN for the IP
-openssl req -new -nodes -newkey rsa:2048 \
+openssl req -new -sha256 -nodes -newkey rsa:2048 \
 	-out ${name}.csr -keyout ${name}.key \
 	-subj "/C=JP/O=BOSH"
 
  cat ./openssl-exts.conf
 
 echo "Generating certificate ..."
-openssl x509 -req -in ${name}.csr \
+openssl x509 -req -sha256 -in ${name}.csr \
 	-CA ca.crt -CAkey ca.key -CAcreateserial \
 	-out ${name}.crt -days 99999 \
 	-extfile ./openssl-exts.conf
