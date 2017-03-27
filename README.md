@@ -1,5 +1,9 @@
 # generate-self-sign-cert
 
+```
+./generate.sh system.<your domain> apps.<your domain>
+```
+
 check
 
 ```
